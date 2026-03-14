@@ -1,0 +1,22 @@
+[Interface]
+# 服务器VPN IP地址
+Address = 10.0.0.1/24
+
+# WireGuard监听端口
+ListenPort = 51820
+
+# 服务器私钥（由install.sh自动生成）
+PrivateKey = SERVER_PRIVATE_KEY_PLACEHOLDER
+
+# 启动后执行的命令（配置NAT转发，动态获取出口网卡）
+# WG_EXT_NIC 会在安装时自动替换为实际的出口网卡名称
+PostUp = iptables -A FORWARD -i wg0 -j ACCEPT; iptables -A FORWARD -o wg0 -j ACCEPT; iptables -t nat -A POSTROUTING -o WG_EXT_NIC -j MASQUERADE
+
+# 停止后执行的命令（清理iptables规则）
+PostDown = iptables -D FORWARD -i wg0 -j ACCEPT; iptables -D FORWARD -o wg0 -j ACCEPT; iptables -t nat -D POSTROUTING -o WG_EXT_NIC -j MASQUERADE
+
+# 客户端配置示例（由manage.sh自动添加）
+# [Peer]
+# PublicKey = CLIENT_PUBLIC_KEY
+# AllowedIPs = 10.0.0.2/32
+
