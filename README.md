@@ -5,34 +5,24 @@
 ## 快速开始
 
 ```bash
-curl -sL https://raw.githubusercontent.com/YOUR_USERNAME/vpn/master/install.sh | sudo bash
+curl -sL https://raw.githubusercontent.com/evaworks/WireGuard/main/install.sh | sudo bash
 ```
 
-### 自定义参数
+## 客户端管理
 
 ```bash
-# 指定端口和域名
-curl -sL https://raw.githubusercontent.com/YOUR_USERNAME/vpn/master/install.sh | sudo bash -s -- --port 51820 --domain your-server.com
+sudo wg add myphone      # 添加客户端
+sudo wg list             # 列出客户端
+sudo wg show myphone     # 查看配置/二维码
+sudo wg remove myphone   # 删除客户端
 ```
-
-## 使用方法
-
-详见 [server/README.md](server/README.md)
 
 ## 系统要求
 
 - Ubuntu 18.04+ / Debian 10+ / CentOS 7+ / RHEL 8+
 - Root 权限
 
-## 上传到 GitHub
+## 详细文档
 
-1. 创建 GitHub 仓库
-2. 上传以下文件：
-   - `install.sh` (根目录)
-   - `server/manage.sh`
-   - `server/wg0.conf.template`
-3. 将 `YOUR_USERNAME/vpn` 替换为你的仓库地址
-
-## License
-
-MIT
+- [快速开始](server/QUICKSTART.md)
+- [使用指南](server/README.md)
