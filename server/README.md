@@ -28,13 +28,13 @@ curl -sL https://raw.githubusercontent.com/evaworks/WireGuard/main/install.sh | 
 ### 添加客户端
 
 ```bash
-vpn-manage.sh add myphone
+wg add myphone
 ```
 
 ### 查看帮助
 
 ```bash
-vpn-manage.sh help
+wg help
 ```
 
 ### 查看服务器信息
@@ -53,5 +53,5 @@ cat /etc/wireguard/server_info.txt
 systemctl stop wg-quick@wg0
 systemctl disable wg-quick@wg0
 rm -rf /etc/wireguard
-rm -f /usr/local/bin/vpn-manage.sh
+rm -f /usr/local/bin/wg
 ```

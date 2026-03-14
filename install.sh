@@ -217,8 +217,8 @@ EOF
     chmod 600 "$WG_CONFIG_DIR/$WG_INTERFACE.conf"
     
     # 复制manage.sh到系统路径
-    cp "$SCRIPT_DIR/server/manage.sh" /usr/local/bin/vpn-manage.sh
-    chmod +x /usr/local/bin/vpn-manage.sh
+    cp "$SCRIPT_DIR/server/manage.sh" /usr/local/bin/wg
+    chmod +x /usr/local/bin/wg
     
     echo -e "${GREEN}WireGuard配置已创建${NC}"
 }
@@ -276,10 +276,10 @@ VPN网络段: $WG_NETWORK
 $SERVER_PUBLIC_KEY
 
 客户端管理命令:
-  vpn-manage.sh add <客户端名称>    # 添加客户端
-  vpn-manage.sh list                # 列出所有客户端
-  vpn-manage.sh show <客户端名称>   # 显示客户端配置和二维码
-  vpn-manage.sh remove <客户端名称> # 删除客户端
+  wg add <客户端名称>    # 添加客户端
+  wg list                # 列出所有客户端
+  wg show <客户端名称>   # 显示客户端配置和二维码
+  wg remove <客户端名称> # 删除客户端
 
 ========================================
 EOF
@@ -317,7 +317,7 @@ main() {
     echo -e "WireGuard端口: ${YELLOW}$WG_PORT${NC}"
     echo -e "服务器公钥: ${YELLOW}$(cat $WG_CONFIG_DIR/server_public.key)${NC}"
     echo ""
-    echo -e "添加客户端: ${YELLOW}vpn-manage.sh add myphone${NC}"
+    echo -e "添加客户端: ${YELLOW}wg add myphone${NC}"
     echo -e "查看信息: ${YELLOW}cat $WG_CONFIG_DIR/server_info.txt${NC}"
     echo ""
 }
