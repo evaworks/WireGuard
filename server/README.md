@@ -4,23 +4,23 @@
 
 ```bash
 # 方式1: curl (推荐)
-curl -sL https://raw.githubusercontent.com/evaworks/WireGuard/master/install.sh | sudo bash
+curl -sL https://raw.githubusercontent.com/evaworks/WireGuard/main/install.sh | sudo bash
 
 # 方式2: wget
-wget -qO- https://raw.githubusercontent.com/evaworks/WireGuard/master/install.sh | sudo bash
+wget -qO- https://raw.githubusercontent.com/evaworks/WireGuard/main/install.sh | sudo bash
 ```
 
 ## 参数选项
 
 ```bash
 # 自定义端口
-curl -sL https://raw.githubusercontent.com/evaworks/WireGuard/master/install.sh | sudo bash -s -- --port 51820
+curl -sL https://raw.githubusercontent.com/evaworks/WireGuard/main/install.sh | sudo bash -s -- --port 51820
 
 # 指定服务器IP/域名
-curl -sL https://raw.githubusercontent.com/evaworks/WireGuard/master/install.sh | sudo bash -s -- --domain your-server.com
+curl -sL https://raw.githubusercontent.com/evaworks/WireGuard/main/install.sh | sudo bash -s -- --domain your-server.com
 
 # 组合使用
-curl -sL https://raw.githubusercontent.com/evaworks/WireGuard/master/install.sh | sudo bash -s -- --port 51820 --domain myserver.com
+curl -sL https://raw.githubusercontent.com/evaworks/WireGuard/main/install.sh | sudo bash -s -- --port 51820 --domain myserver.com
 ```
 
 ## 安装后

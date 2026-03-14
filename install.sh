@@ -7,7 +7,7 @@
 set -e
 
 # GitHub配置 - 修改为你的GitHub仓库地址
-GITHUB_REPO="https://raw.githubusercontent.com/evaworks/WireGuard/master/server"
+GITHUB_REPO="https://raw.githubusercontent.com/evaworks/WireGuard/main/server"
 
 # 颜色输出
 RED='\033[0;31m'
