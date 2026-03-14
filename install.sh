@@ -82,13 +82,6 @@ download_files() {
         exit 1
     }
     
-    # 下载wg0.conf.template
-    echo -e "下载 wg0.conf.template..."
-    curl -sL "$GITHUB_REPO/wg0.conf.template" -o "$SCRIPT_DIR/server/wg0.conf.template" || {
-        echo -e "${RED}下载 wg0.conf.template 失败${NC}"
-        exit 1
-    }
-    
     chmod +x "$SCRIPT_DIR/server/manage.sh"
     echo -e "${GREEN}文件下载完成${NC}"
 }
