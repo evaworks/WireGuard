@@ -54,9 +54,12 @@ show_help() {
 # 下载manage.sh
 download_manage() {
     echo -e "${YELLOW}正在下载管理脚本...${NC}"
-    curl -sL "$GITHUB_REPO/manage.sh" -o /usr/local/bin/wg
-    chmod +x /usr/local/bin/wg
+    # 删除旧版冲突的 wg 命令（若存在）
+    rm -f /usr/local/bin/wg
+    curl -sL "$GITHUB_REPO/manage.sh" -o /usr/local/bin/wg-mgr
+    chmod +x /usr/local/bin/wg-mgr
     echo -e "${GREEN}下载完成${NC}"
+    echo -e "${YELLOW}管理命令: wg-mgr add/list/show/remove${NC}"
 }
 
 # 检查root权限
@@ -186,7 +189,7 @@ save_info() {
 端口: $WG_PORT
 公钥: $(cat $WG_CONFIG_DIR/server_public.key)
 
-管理命令: wg add/list/show/remove
+    管理命令: wg-mgr add/list/show/remove
 EOF
 }
 
@@ -216,7 +219,7 @@ main() {
     echo -e "端口: ${YELLOW}$WG_PORT${NC}"
     echo -e "公钥: ${YELLOW}$(cat $WG_CONFIG_DIR/server_public.key)${NC}"
     echo ""
-    echo -e "添加客户端: ${YELLOW}wg add myphone${NC}"
+    echo -e "添加客户端: ${YELLOW}wg-mgr add myphone${NC}"
 }
 
 main "$@"
