@@ -112,7 +112,16 @@ generate_keys() {
     echo -e "${YELLOW}正在生成密钥...${NC}"
     mkdir -p "$WG_CONFIG_DIR"
     
-    if [ ! -f "$WG_CONFIG_DIR/server_private.key" ]; then
+    # 检查现有密钥是否有效（WireGuard私钥为44位base64，以=结尾）
+    local key_valid=false
+    if [ -f "$WG_CONFIG_DIR/server_private.key" ]; then
+        local key_content=$(cat "$WG_CONFIG_DIR/server_private.key")
+        if echo "$key_content" | wg pubkey &>/dev/null 2>&1; then
+            key_valid=true
+        fi
+    fi
+    
+    if [ "$key_valid" != true ]; then
         wg genkey | tee "$WG_CONFIG_DIR/server_private.key" | wg pubkey > "$WG_CONFIG_DIR/server_public.key"
         chmod 600 "$WG_CONFIG_DIR/server_private.key"
     fi
