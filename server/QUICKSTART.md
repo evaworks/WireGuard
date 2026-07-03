@@ -10,19 +10,19 @@ curl -sL https://raw.githubusercontent.com/evaworks/WireGuard/main/install.sh | 
 
 ```bash
 # 添加客户端
-sudo wg add myphone
+sudo wgm add myphone
 
 # 列出所有客户端
-sudo wg list
+sudo wgm list
 
 # 查看客户端配置和二维码
-sudo wg show myphone
+sudo wgm show myphone
 
 # 删除客户端
-sudo wg remove myphone
+sudo wgm remove myphone
 
 # 查看帮助
-sudo wg help
+sudo wgm help
 ```
 
 ## 查看服务器信息
@@ -37,7 +37,7 @@ cat /etc/wireguard/server_info.txt
 sudo systemctl stop wg-quick@wg0
 sudo systemctl disable wg-quick@wg0
 sudo rm -rf /etc/wireguard
-sudo rm -f /usr/local/bin/wg
+sudo rm -f /usr/local/bin/wgm
 ```
 
 ## 可选参数

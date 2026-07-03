@@ -11,10 +11,10 @@ curl -sL https://raw.githubusercontent.com/evaworks/WireGuard/main/install.sh | 
 ## 客户端管理
 
 ```bash
-sudo wg add myphone      # 添加客户端
-sudo wg list             # 列出客户端
-sudo wg show myphone     # 查看配置/二维码
-sudo wg remove myphone   # 删除客户端
+sudo wgm add myphone      # 添加客户端
+sudo wgm list             # 列出客户端
+sudo wgm show myphone     # 查看配置/二维码
+sudo wgm remove myphone   # 删除客户端
 ```
 
 ## 系统要求
