@@ -31,7 +31,20 @@ sudo wgm help
 cat /etc/wireguard/server_info.txt
 ```
 
+## 强制重装
+
+```bash
+# 清理旧配置并重新安装（无需手动卸载）
+curl -sL https://raw.githubusercontent.com/evaworks/WireGuard/main/install.sh | sudo bash -s -- --force
+```
+
 ## 卸载
+
+```bash
+curl -sL https://raw.githubusercontent.com/evaworks/WireGuard/main/server/uninstall.sh | sudo bash
+```
+
+或手动清除：
 
 ```bash
 sudo systemctl stop wg-quick@wg0
@@ -48,4 +61,7 @@ curl -sL ... | sudo bash -s -- --port 51820
 
 # 指定服务器域名
 curl -sL ... | sudo bash -s -- --domain your-server.com
+
+# 强制重装（清理旧配置后重新安装）
+curl -sL ... | sudo bash -s -- --force
 ```

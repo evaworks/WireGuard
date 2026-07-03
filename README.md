@@ -17,6 +17,27 @@ sudo wgm show myphone     # 查看配置/二维码
 sudo wgm remove myphone   # 删除客户端
 ```
 
+## 强制重装
+
+```bash
+# 清理旧配置并重新安装
+curl -sL https://raw.githubusercontent.com/evaworks/WireGuard/main/install.sh | sudo bash -s -- --force
+```
+
+## 卸载
+
+```bash
+curl -sL https://raw.githubusercontent.com/evaworks/WireGuard/main/server/uninstall.sh | sudo bash
+```
+
+## 可选参数
+
+```bash
+--port <端口>     指定端口 (默认: 51820)
+--domain <域名>   指定服务器域名/IP
+-f, --force       强制重装（清理旧配置后重新安装）
+```
+
 ## 系统要求
 
 - Ubuntu 18.04+ / Debian 10+ / CentOS 7+ / RHEL 8+
