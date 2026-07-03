@@ -106,8 +106,8 @@ add_client() {
 [Interface]
 PrivateKey = $client_private_key
 Address = $client_ip/24
-DNS = 223.5.5.5, 8.8.8.8, 1.1.1.1
-MTU = 1280
+DNS = 1.1.1.1, 8.8.8.8
+MTU = 1420
 
 [Peer]
 PublicKey = $server_public_key
