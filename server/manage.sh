@@ -72,6 +72,14 @@ add_client() {
         exit 1
     fi
     
+    # 检查服务器配置文件是否存在
+    if [ ! -f "$WG_CONFIG_FILE" ]; then
+        echo -e "${RED}错误: 服务器配置文件 $WG_CONFIG_FILE 不存在${NC}"
+        echo -e "${YELLOW}请先运行安装脚本完成服务端配置后再添加客户端${NC}"
+        echo -e "${YELLOW}安装命令: curl -sL https://raw.githubusercontent.com/evaworks/WireGuard/main/install.sh | sudo bash${NC}"
+        exit 1
+    fi
+    
     echo -e "${YELLOW}正在添加客户端: $client_name${NC}"
     
     # 生成客户端密钥
@@ -105,7 +113,7 @@ EOF
     chmod 600 "$WG_CLIENTS_DIR/$client_name.conf"
     
     # 将客户端添加到服务器配置
-    if ! grep -q "\[Peer\]" "$WG_CONFIG_FILE" || ! grep -q "$client_name" "$WG_CONFIG_FILE"; then
+    if ! grep -q "\[Peer\]" "$WG_CONFIG_FILE" 2>/dev/null || ! grep -q "$client_name" "$WG_CONFIG_FILE" 2>/dev/null; then
         cat >> "$WG_CONFIG_FILE" <<EOF
 
 # Client: $client_name
@@ -126,9 +134,11 @@ EOF
     else
         # 接口不存在，需要启动服务
         echo -e "${YELLOW}WireGuard接口未启动，正在启动服务...${NC}"
-        systemctl start wg-quick@$WG_INTERFACE || {
+        systemctl start wg-quick@$WG_INTERFACE 2>/dev/null || {
             echo -e "${RED}错误: 无法启动WireGuard服务${NC}"
             echo -e "${YELLOW}请检查配置文件: $WG_CONFIG_FILE${NC}"
+            echo -e "${YELLOW}查看详细日志: journalctl -xeu wg-quick@$WG_INTERFACE${NC}"
+            echo -e "${YELLOW}或: systemctl status wg-quick@$WG_INTERFACE${NC}"
             exit 1
         }
     fi
@@ -150,6 +160,12 @@ EOF
 
 # 列出所有客户端
 list_clients() {
+    if [ ! -f "$WG_CONFIG_FILE" ]; then
+        echo -e "${RED}错误: 服务器配置文件 $WG_CONFIG_FILE 不存在${NC}"
+        echo -e "${YELLOW}请先运行安装脚本完成服务端配置${NC}"
+        return
+    fi
+    
     echo -e "${GREEN}已配置的客户端:${NC}"
     echo ""
     
@@ -233,10 +249,16 @@ remove_client() {
         exit 1
     fi
     
+    if [ ! -f "$WG_CONFIG_FILE" ]; then
+        echo -e "${RED}错误: 服务器配置文件 $WG_CONFIG_FILE 不存在${NC}"
+        echo -e "${YELLOW}请先运行安装脚本完成服务端配置${NC}"
+        exit 1
+    fi
+    
     echo -e "${YELLOW}正在删除客户端: $client_name${NC}"
     
     # 从服务器配置中移除客户端
-    local client_pubkey=$(grep -A 5 "\[Peer\]" "$WG_CONFIG_FILE" | grep -B 5 "$client_name" | grep "PublicKey" | awk '{print $3}' | head -1)
+    local client_pubkey=$(grep -A 5 "\[Peer\]" "$WG_CONFIG_FILE" 2>/dev/null | grep -B 5 "$client_name" | grep "PublicKey" | awk '{print $3}' | head -1)
     
     if [ -n "$client_pubkey" ]; then
         # 使用sed删除客户端配置块

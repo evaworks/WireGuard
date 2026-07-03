@@ -119,9 +119,15 @@ generate_keys() {
 # 获取服务器IP
 get_server_ip() {
     if [ -z "$SERVER_PUBLIC_IP" ]; then
-        SERVER_PUBLIC_IP=$(curl -s ifconfig.me || curl -s ipinfo.io/ip)
+        SERVER_PUBLIC_IP=$(curl -s ifconfig.me || curl -s ipinfo.io/ip || curl -s icanhazip.com)
     fi
-    [ -z "$SERVER_PUBLIC_IP" ] && read -p "请输入服务器IP/域名: " SERVER_PUBLIC_IP
+    if [ -z "$SERVER_PUBLIC_IP" ]; then
+        read -p "请输入服务器IP/域名: " SERVER_PUBLIC_IP </dev/tty
+    fi
+    if [ -z "$SERVER_PUBLIC_IP" ]; then
+        echo -e "${RED}错误: 无法获取服务器IP，请使用 --domain 参数指定${NC}"
+        exit 1
+    fi
     echo -e "${GREEN}服务器: $SERVER_PUBLIC_IP${NC}"
 }
 
