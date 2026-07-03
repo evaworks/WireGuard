@@ -21,6 +21,7 @@ WG_NETWORK="10.0.0.0/24"
 WG_SERVER_IP="10.0.0.1"
 WG_CONFIG_DIR="/etc/wireguard"
 WG_CLIENTS_DIR="$WG_CONFIG_DIR/clients"
+FORCE=false
 
 # 解析参数
 parse_args() {
@@ -32,6 +33,9 @@ parse_args() {
             --domain)
                 SERVER_PUBLIC_IP="$2"
                 shift 2;;
+            -f|--force)
+                FORCE=true
+                shift;;
             -h|--help)
                 show_help
                 exit 0;;
@@ -49,6 +53,32 @@ show_help() {
     echo "参数:"
     echo "  --port <端口>   端口 (默认: 51820)"
     echo "  --domain <域名> 服务器域名/IP"
+    echo "  -f, --force     强制重装（清理旧配置后重新安装）"
+}
+
+# 卸载旧版本
+cleanup_old() {
+    echo -e "${YELLOW}正在清理旧版本...${NC}"
+    
+    # 停止并禁用服务
+    systemctl stop wg-quick@$WG_INTERFACE 2>/dev/null || true
+    systemctl disable wg-quick@$WG_INTERFACE 2>/dev/null || true
+    
+    # 清理防火墙规则
+    if command -v ufw &> /dev/null; then
+        ufw delete allow $WG_PORT/udp 2>/dev/null || true
+    elif command -v firewall-cmd &> /dev/null; then
+        firewall-cmd --permanent --remove-port=$WG_PORT/udp 2>/dev/null || true
+        firewall-cmd --reload 2>/dev/null || true
+    fi
+    
+    # 删除配置文件和密钥
+    rm -rf "$WG_CONFIG_DIR"
+    
+    # 删除管理脚本
+    rm -f /usr/local/bin/wgm /usr/local/bin/wg
+    
+    echo -e "${GREEN}旧版本已清理${NC}"
 }
 
 # 下载manage.sh
@@ -211,6 +241,11 @@ main() {
     echo -e "${BLUE}=============================${NC}"
     
     check_root
+    
+    if [ "$FORCE" = true ]; then
+        cleanup_old
+    fi
+    
     detect_os
     download_manage
     install_wireguard

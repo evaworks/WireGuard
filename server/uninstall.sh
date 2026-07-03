@@ -65,6 +65,13 @@ cleanup_firewall() {
     fi
 }
 
+# 清理管理脚本
+cleanup_scripts() {
+    echo -e "${YELLOW}正在清理管理脚本...${NC}"
+    rm -f /usr/local/bin/wgm /usr/local/bin/wg
+    echo -e "${GREEN}管理脚本已删除${NC}"
+}
+
 # 清理配置文件
 cleanup_config() {
     echo -e "${YELLOW}正在清理配置文件...${NC}"
@@ -133,6 +140,7 @@ main() {
     stop_wireguard
     cleanup_firewall
     cleanup_config
+    cleanup_scripts
     uninstall_packages
     restore_ip_forward
     
