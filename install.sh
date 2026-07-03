@@ -161,7 +161,7 @@ generate_keys() {
 # 获取服务器IP
 get_server_ip() {
     if [ -z "$SERVER_PUBLIC_IP" ]; then
-        SERVER_PUBLIC_IP=$(curl -s ifconfig.me || curl -s ipinfo.io/ip || curl -s icanhazip.com)
+        SERVER_PUBLIC_IP=$(curl -s --connect-timeout 3 ifconfig.me 2>/dev/null || curl -s --connect-timeout 3 ipinfo.io/ip 2>/dev/null || curl -s --connect-timeout 3 icanhazip.com 2>/dev/null || curl -s --connect-timeout 3 myip.ipip.net 2>/dev/null || curl -s --connect-timeout 3 http://100.100.100.200/latest/meta-data/public-ipv4 2>/dev/null)
     fi
     if [ -z "$SERVER_PUBLIC_IP" ]; then
         read -p "请输入服务器IP/域名: " SERVER_PUBLIC_IP </dev/tty

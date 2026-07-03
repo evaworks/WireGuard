@@ -44,15 +44,20 @@ get_next_client_ip() {
 # 获取服务器信息
 get_server_info() {
     if [ -f "$WG_CONFIG_DIR/server_info.txt" ]; then
-        SERVER_PUBLIC_IP=$(grep "服务器公网地址:" "$WG_CONFIG_DIR/server_info.txt" | cut -d: -f2 | xargs)
-        WG_PORT=$(grep "WireGuard端口:" "$WG_CONFIG_DIR/server_info.txt" | cut -d: -f2 | xargs)
-    else
-        SERVER_PUBLIC_IP=$(curl -s ifconfig.me || curl -s ipinfo.io/ip || curl -s icanhazip.com)
+        SERVER_PUBLIC_IP=$(grep "^服务器:" "$WG_CONFIG_DIR/server_info.txt" | head -1 | awk -F': ' '{print $2}')
+        WG_PORT=$(grep "^端口:" "$WG_CONFIG_DIR/server_info.txt" | head -1 | awk -F': ' '{print $2}')
+    fi
+    
+    if [ -z "$SERVER_PUBLIC_IP" ]; then
+        SERVER_PUBLIC_IP=$(curl -s --connect-timeout 3 ifconfig.me 2>/dev/null || curl -s --connect-timeout 3 ipinfo.io/ip 2>/dev/null || curl -s --connect-timeout 3 icanhazip.com 2>/dev/null || curl -s --connect-timeout 3 myip.ipip.net 2>/dev/null || curl -s --connect-timeout 3 http://100.100.100.200/latest/meta-data/public-ipv4 2>/dev/null)
+    fi
+    
+    if [ -z "$WG_PORT" ]; then
         WG_PORT="51820"
     fi
     
     if [ -z "$SERVER_PUBLIC_IP" ]; then
-        read -p "请输入服务器公网IP或域名: " SERVER_PUBLIC_IP
+        read -p "请输入服务器公网IP或域名: " SERVER_PUBLIC_IP </dev/tty
     fi
 }
 
