@@ -17,6 +17,13 @@ sudo wgm show myphone     # 查看配置/二维码
 sudo wgm remove myphone   # 删除客户端
 ```
 
+## 指定域名
+
+```bash
+# 使用域名安装（避免手动输入IP）
+curl -sL https://raw.githubusercontent.com/evaworks/WireGuard/main/install.sh | sudo bash -s -- --domain your-domain.com
+```
+
 ## 强制重装
 
 ```bash
